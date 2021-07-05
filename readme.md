@@ -13,9 +13,9 @@ Note:
 
 
 ==========UPDATE NOTES==========
-v2.0 
-- Added Command Line Interface
-- Added ability to interact with changes.txt within the program itself.
-- Added ability to add/modify filepath.txt within the program itself.
+- v2.0 
+	- Added Command Line Interface
+	- Added ability to interact with changes.txt within the program itself.
+	- Added ability to add/modify filepath.txt within the program itself.
 
 Created by Bev7787.
