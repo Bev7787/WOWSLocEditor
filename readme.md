@@ -10,7 +10,7 @@ Note:
 - When entering the location, the input should look similar to this:
 	- D:\Games\World_of_Warships_ASIA\bin\4046169\res\texts\en\LC_MESSAGES
 	- Do not worry if the World_of_Warships_ASIA folder is named differently. This is a legacy folder name that does not affect anything.
-- The IDs and changed names are in the file editor_files/changes.txt/. To modify another element of the game, do the following:
+- The IDs and changed names are in the file editor_files/changes.txt/.
 - If your changes do not show up, some ships have been modified and as a result, their ID has changed. An example of this is the Conqueror (IDS_PBSB110 and IDS_PBSB911). To be safe, modify all instances of the same ship.
 
 
