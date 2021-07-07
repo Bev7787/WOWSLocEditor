@@ -1,7 +1,9 @@
+Introduction:
 - The program runs on a command line interface. Type in the character corresponding to the option required. 
 - The program allows addition and convenient configuration of the global.mo file location, the addition or modification of elements to be changed, and the ability to implement changes.
 
 Usage:
+- Ensure a backup copy of the global.mo file is made before using this program.
 - Run locEditor.exe, and follow the prompts in the program.
 
 Note:
