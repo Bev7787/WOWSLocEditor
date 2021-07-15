@@ -111,7 +111,7 @@ def modifyFile(): #Modify the global.mo file based off the settings in the other
 def searchMo():
     fileReader("editor_files/filepath.txt")
     mo = polib.mofile(location[0] + '/global.mo')
-    searchList = input("Enter search term. (Enter nothing to exit): ")
+    searchList = input("\nEnter search term. (Enter nothing to exit): ")
     while searchList:
         for entry in mo:
             check = re.search(f'(?i){searchList}', entry.msgstr)
