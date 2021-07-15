@@ -1,4 +1,6 @@
 import polib
+import re
+import os
 dict = {}
 tempList = []
 location = []
@@ -29,18 +31,32 @@ def changeLocation(): #Add/modify global.mo file location.
         f.close()
     elif (uin == "2"):
         f = open("editor_files/filepath.txt", "r")
-        newAddress = input(f'Enter the name of the highest numbered folder in /bin: ')
         line = f.readline().rstrip()
         tempList = line.split("/")
         f.close()
+        newTemp = []
+        for path in tempList: #checks filepath up to bin and saves.
+            if (path == "bin"):
+                newTemp.append(path)
+                break
+            newTemp.append(path)
+        newAddressList = os.listdir("/".join(newTemp)) #assigns newAddressList to directory listing in /bin folder
+        highest = int(newAddressList[0])
+        for folder in newAddressList:
+            if int(folder) > highest:
+                highest = int(folder)
+        newAddress = highest
+        previous = ""
         for i in range (0, len(tempList)):
             if (tempList[i] == "bin"):
+                previous = tempList[i+1]
                 tempList[i+1] = str(newAddress)
                 break
         f = open("editor_files/filepath.txt", "w")
         f.write(f'{"/".join(tempList)}')
         f.close()
         tempList = []
+        print(f'Updated /bin folder to {highest}. (Previously {previous}.)')
     elif (uin == "0"):
         print("Returning to main menu.")
     else:
@@ -92,11 +108,22 @@ def modifyFile(): #Modify the global.mo file based off the settings in the other
     print(f'\nDone... Saving file...')
     mo.save(location[0] + '/global.mo')
     print("Done!")
-
+def searchMo():
+    fileReader("editor_files/filepath.txt")
+    mo = polib.mofile(location[0] + '/global.mo')
+    searchList = input("Enter search term. (Enter nothing to exit): ")
+    while searchList:
+        for entry in mo:
+            check = re.search(f'(?i){searchList}', entry.msgstr)
+            if (check and entry.msgid != "IDS_SSE_TEMPLATES_META"):
+                print(f'{entry.msgid}:{entry.msgstr}')
+                print('')
+        print(f'===========================End of Search===========================\n')
+        searchList = input("Enter search term. (Enter nothing to exit): ")
 #main code
 print(f'Welcome to the WoWs Localisation Editor tool. This tool automatically applies any modifications desired to the global.mo localisation file.\nIf you have not already, please review the README file.')
 print('To navigate the interface, enter the character corresponding to the option desired.')
-print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\nQ: Quit the Application.')
+print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\n4: Search for ID by input.\nQ: Quit the Application.')
 uin = str(input("Input: "))
 while terminate == False:
     if uin == "1":
@@ -124,6 +151,8 @@ while terminate == False:
         else:
             print("Returning to main menu.")
     elif uin == "4":
+        searchMo()
+    elif uin == "5":
         import antigravity
     elif uin.lower() == "q":
         terminate = True
@@ -132,7 +161,7 @@ while terminate == False:
     else:
         print("Error: Invalid input")
     print("==========================================================================")
-    print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\nQ: Quit the Application.')
+    print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\n4: Search for ID by input.\nQ: Quit the Application.')
     uin = str(input("Input: "))
 
 
