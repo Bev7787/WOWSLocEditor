@@ -1,10 +1,12 @@
 Introduction:
-- The program runs on a command line interface. Type in the character corresponding to the option required. 
-- The program allows addition and convenient configuration of the global.mo file location, the addition or modification of elements to be changed, and the ability to implement changes.
+- This program is designed to run on Windows computers only.
+- The program runs on a command line interface. Type in the character corresponding to the option required when prompted.
+- Allows addition and convenient configuration of the global.mo file location, the addition or modification of elements to be changed, and the ability to implement changes automatically.
 
 Usage:
 - Ensure a backup copy of the global.mo file is made before using this program.
 - Run locEditor.exe, and follow the prompts in the program.
+- When using the search tool, it will search for the exact phrase in the localisation. This can be an issue with names with special characters. Try searching for parts of a name instead (e.g. Friedrich instead of Friedrich der Große.)
 
 Note:
 - When entering the location, the input should look similar to this:
@@ -15,6 +17,9 @@ Note:
 
 
 ==========UPDATE NOTES==========
+- v2.1
+	- Added search interface. Allows for searching of an ID by the localisation.
+	- The original global.mo file is no longer directly edited. The modified file is now located in res_mods. 
 - v2.0 
 	- Added Command Line Interface
 	- Added ability to interact with changes.txt within the program itself.
