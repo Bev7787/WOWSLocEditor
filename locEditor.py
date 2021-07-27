@@ -27,33 +27,45 @@ def changeLocation(): #Add/modify global.mo file location.
         f = open("editor_files/filepath.txt", "w")
         tempList = input(f'Copy and paste the location of the global.mo file for your WOWS installation (Ensure backslashes are used). (See README for an example)\n').split("\\")
         f.write(f'{"/".join(tempList)}')
+        f.write('\n')
+        #Add second line which points to res_mods and the modded global.mo
+        for i in range(len(tempList)):
+            if (tempList[i] == "res"):
+                tempList[i] = "res_mods"
+        f.write(f'{"/".join(tempList)}')
         tempList = []
         f.close()
     elif (uin == "2"):
         f = open("editor_files/filepath.txt", "r")
-        line = f.readline().rstrip()
-        tempList = line.split("/")
-        f.close()
-        newTemp = []
-        for path in tempList: #checks filepath up to bin and saves.
-            if (path == "bin"):
+        newAddr = []
+        for line in f:
+            line = line.rstrip()
+            tempList = line.split("/")
+            newTemp = []
+            for path in tempList: #checks filepath up to bin and saves.
+                if (path == "bin"):
+                    newTemp.append(path)
+                    break
                 newTemp.append(path)
-                break
-            newTemp.append(path)
-        newAddressList = os.listdir("/".join(newTemp)) #assigns newAddressList to directory listing in /bin folder
-        highest = int(newAddressList[0])
-        for folder in newAddressList:
-            if int(folder) > highest:
-                highest = int(folder)
-        newAddress = highest
-        previous = ""
-        for i in range (0, len(tempList)):
-            if (tempList[i] == "bin"):
-                previous = tempList[i+1]
-                tempList[i+1] = str(newAddress)
-                break
+            newAddressList = os.listdir("/".join(newTemp)) #assigns newAddressList to directory listing in /bin folder
+            highest = int(newAddressList[0])
+            for folder in newAddressList:
+                if int(folder) > highest:
+                    highest = int(folder)
+            newAddress = highest
+            previous = ""
+            for i in range (0, len(tempList)):
+                if (tempList[i] == "bin"):
+                    previous = tempList[i+1]
+                    tempList[i+1] = str(newAddress)
+                    break
+            newAddr.append(f'{"/".join(tempList)}')
+        f.close()
+        print(newAddr)
         f = open("editor_files/filepath.txt", "w")
-        f.write(f'{"/".join(tempList)}')
+        for filepath in newAddr:
+            f.write(filepath)
+            f.write('\n')
         f.close()
         tempList = []
         print(f'Updated /bin folder to {highest}. (Previously {previous}.)')
@@ -100,15 +112,21 @@ def modifyFile(): #Modify the global.mo file based off the settings in the other
     changefileReader("editor_files/changes.txt", ":")
     mo = polib.mofile(location[0] + '/global.mo')
     n = 0
+    #Check to see if res_mods address exists
+    try:
+        os.listdir(location[1])
+    except OSError:
+        print("Unable to find path... Creating requisite directories...")
+        os.makedirs(location[1])
     for entry in mo:
         if (entry.msgid in dict):
             entry.msgstr = dict[entry.msgid]
         n+=1
         print(f'\rLines scanned: {n}', end = "", flush=True)
     print(f'\nDone... Saving file...')
-    mo.save(location[0] + '/global.mo')
+    mo.save(location[1] + '/global.mo')
     print("Done!")
-def searchMo():
+def searchMo(): #Search through global.mo file with regex.
     fileReader("editor_files/filepath.txt")
     mo = polib.mofile(location[0] + '/global.mo')
     searchList = input("\nEnter search term. (Enter nothing to exit): ")
