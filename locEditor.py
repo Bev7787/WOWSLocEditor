@@ -22,7 +22,7 @@ def fileReader(file): #Reads in the location of the global.mo file from filepath
         location.append(line)
     f.close()
 def changeLocation(): #Add/modify global.mo file location.
-    uin = str(input(f'\nInput the option below:\n1: Add a new location\n2: Update location to latest WOWS version.\n0: Return to main menu\nInput: '))
+    uin = str(input(f'\nInput the option below:\n1: Add a new location\n2: Update location to latest WOWS version. (Note: folder location must have already been specified).\n0: Return to main menu\nInput: '))
     if (uin == "1"):
         f = open("editor_files/filepath.txt", "w")
         tempList = input(f'Copy and paste the location of the global.mo file for your WOWS installation (Ensure backslashes are used). (See README for an example)\n').split("\\")
