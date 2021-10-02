@@ -1,10 +1,12 @@
 import polib
 import re
 import os
+
 dict = {}
 tempList = []
 location = []
 terminate = False
+
 
 def changefileReader(file, splitter): #Reads in the contents of changes.txt, separates based on a splitter and places the results in a dictionary.
     f = open(file, "r")
@@ -49,11 +51,10 @@ def changeLocation(): #Add/modify global.mo file location.
                 newTemp.append(path)
             newAddressList = os.listdir("/".join(newTemp)) #assigns newAddressList to directory listing in /bin folder
             highest = int(newAddressList[0])
-            for folder in newAddressList:
+            for folder in newAddressList: #Searches for highest numbered folder in /bin.
                 if int(folder) > highest:
                     highest = int(folder)
             newAddress = highest
-            previous = ""
             for i in range (0, len(tempList)):
                 if (tempList[i] == "bin"):
                     previous = tempList[i+1]
@@ -61,14 +62,13 @@ def changeLocation(): #Add/modify global.mo file location.
                     break
             newAddr.append(f'{"/".join(tempList)}')
         f.close()
-        print(newAddr)
         f = open("editor_files/filepath.txt", "w")
         for filepath in newAddr:
             f.write(filepath)
             f.write('\n')
         f.close()
         tempList = []
-        print(f'Updated /bin folder to {highest}. (Previously {previous}.)')
+        print(f'Updated /bin folder to {highest}. (Previously {previous})')
     elif (uin == "0"):
         print("Returning to main menu.")
     else:
@@ -76,7 +76,6 @@ def changeLocation(): #Add/modify global.mo file location.
 def addEntry(ID, changedText, file, splitter): #Add/modify entry into changes.txt
     existingLines = []
     f = open(file, "r+")
-    n = 0
     elementLoc = 0
     isWritten = False
     for line in f:
@@ -84,9 +83,7 @@ def addEntry(ID, changedText, file, splitter): #Add/modify entry into changes.tx
         tempList = line.split(splitter)
         existingLines.append(tempList)
         if (tempList[0] == ID):
-            elementLoc = n
             isWritten = True
-        n+=1
         tempList = []
     f.close() #file read complete
     if (isWritten == True):
@@ -112,7 +109,7 @@ def modifyFile(): #Modify the global.mo file based off the settings in the other
     changefileReader("editor_files/changes.txt", ":")
     mo = polib.mofile(location[0] + '/global.mo')
     n = 0
-    #Check to see if res_mods address exists
+    #Check to see if res_mods path exists. Otherwise creates folders in res_mods. 
     try:
         os.listdir(location[1])
     except OSError:
@@ -141,7 +138,7 @@ def searchMo(): #Search through global.mo file with regex.
 #main code
 print(f'Welcome to the WoWs Localisation Editor tool. This tool automatically applies any modifications desired to the global.mo localisation file.\nIf you have not already, please review the README file.')
 print('To navigate the interface, enter the character corresponding to the option desired.')
-print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\n4: Search for ID by input.\nQ: Quit the Application.')
+print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\n4: Search for ID by input.\n5: Revert changes.\nQ: Quit the Application.')
 uin = str(input("Input: "))
 while terminate == False:
     if uin == "1":
@@ -171,6 +168,14 @@ while terminate == False:
     elif uin == "4":
         searchMo()
     elif uin == "5":
+        promptUser = input(f'Are you sure you want to revert the file? [Y/N]: ').upper()
+        if (promptUser == "Y"):
+            #Obtain original file and overwrite modified file.
+            mo = polib.mofile(location[0] + '/global.mo')
+            mo.save(location[1] + '/global.mo')
+        else:
+            print("Returning to main menu.")
+    elif uin == "6":
         import antigravity
     elif uin.lower() == "q":
         terminate = True
@@ -179,7 +184,7 @@ while terminate == False:
     else:
         print("Error: Invalid input")
     print("==========================================================================")
-    print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\n4: Search for ID by input.\nQ: Quit the Application.')
+    print(f'1: Add or modify localisation file location. (This should be done upon first use or after a game update.)\n2: Add or modify elements to be changed.\n3: Implement changes to localisation file.\n4: Search for ID by input.\n5: Revert changes.\nQ: Quit the Application.')
     uin = str(input("Input: "))
 
 

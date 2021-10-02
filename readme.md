@@ -1,4 +1,5 @@
 Introduction:
+- Currently tested to work with English localisation only. Other languages may have issues.
 - This program is designed to run on Windows computers only.
 - The program runs on a command line interface. Type in the character corresponding to the option required when prompted.
 - Allows addition and convenient configuration of the global.mo file location, the addition or modification of elements to be changed, and the ability to implement changes automatically.
@@ -18,6 +19,7 @@ Usage:
 	- The program will prompt to determine if the change is for a ship. The game has two IDs for ships: The abbreviated name (Seen in battle), and the full name (visible when hovering over a ship in port). This option allows the user to change both names at once.
 - To implement the changes, type "3". The program will prompt for confirmation, before modifying global.mo, and saving a new global.mo file located in the same filepath, except in the res_mods folder.
 - To search for an ID via its current localisation, type "4". The search function will search for the exact phrase in the localisation. This can be an issue with names with special characters. Try searching for parts of a name instead if this is the case (e.g. Friedrich instead of Friedrich der Große.)
+- To revert all changes to the default, type "5".
 
 Note:
 - When entering the location, the input should look similar to this:
@@ -27,6 +29,8 @@ Note:
 
 
 ==========UPDATE NOTES==========
+- v2.1.1
+	- Minor bug fixes and quality of life improvements.
 - v2.1
 	- Added search interface. Allows for searching of an ID by the localisation.
 	- The original global.mo file is no longer directly edited. The modified file is now located in res_mods. 
